@@ -12,9 +12,9 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
     mainwindow.cpp \
-    ../camera.cpp
+    ../v4l2.cpp
 
 HEADERS  += mainwindow.h \
-    ../camera.h
+    ../v4l2.h
 
 FORMS    += mainwindow.ui
