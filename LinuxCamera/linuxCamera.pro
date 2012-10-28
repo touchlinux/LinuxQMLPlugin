@@ -1,5 +1,5 @@
 TEMPLATE = lib
-TARGET = QCapture
+TARGET = LinuxCamera
 QT += declarative
 CONFIG += qt plugin
 
@@ -8,14 +8,14 @@ uri = com.touchlinux.qmlcomponents
 
 # Input
 SOURCES += \
-    v4l2.cpp \
-    linuxCamera.cpp \
-    linuxCamera_plugin.cpp
+    src/v4l2.cpp \
+    src/linuxCamera.cpp \
+    src/linuxCamera_plugin.cpp
 
 HEADERS += \
-    v4l2.h \
-    linuxCamera.h \
-    linuxCamera_plugin.h
+    src/v4l2.h \
+    src/linuxCamera.h \
+    src/linuxCamera_plugin.h
 
 OTHER_FILES = qmldir
 

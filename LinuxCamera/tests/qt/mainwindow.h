@@ -24,7 +24,7 @@
 
 #include <QMainWindow>
 #include <QLabel>
-#include "../v4l2.h"
+#include "../../src/v4l2.h"
 
 namespace Ui {
 class MainWindow;
