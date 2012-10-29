@@ -19,18 +19,35 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef LINUXSOUND_PLUGIN_H
-#define LINUXSOUND_PLUGIN_H
+#include <QDebug>
+#include "soundThread.h"
 
-#include <QtDeclarative/QDeclarativeExtensionPlugin>
-
-class LinuxSoundPlugin : public QDeclarativeExtensionPlugin
+SoundThread::SoundThread(const QString program, const QStringList arguments) :
+    mProgram(program),
+    mArguments(arguments)
 {
-    Q_OBJECT
-    
-public:
-    void registerTypes(const char *uri);
-};
+    //qDebug() << __FUNCTION__ << "is called";
+    connect(this, SIGNAL(finished()), this, SLOT(destroyItself()));
+}
 
-#endif // LINUXSOUND_PLUGIN_H
+SoundThread::~SoundThread()
+{
+    //qDebug() << __FUNCTION__ << "is called";
+    if (mProcess != NULL)
+        delete mProcess;
+}
 
+void SoundThread::run()
+{
+    //qDebug() << __FUNCTION__ << "is called";
+    mProcess = new QProcess;
+    mProcess->start(mProgram, mArguments);
+    mProcess->waitForFinished();
+    /* playing */
+}
+
+void SoundThread::destroyItself()
+{
+    quit();
+    delete this;
+}

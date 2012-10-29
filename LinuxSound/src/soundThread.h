@@ -19,18 +19,26 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef LINUXSOUND_PLUGIN_H
-#define LINUXSOUND_PLUGIN_H
+#ifndef SOUNDTHREAD_H
+#define SOUNDTHREAD_H
 
-#include <QtDeclarative/QDeclarativeExtensionPlugin>
+#include <QThread>
+#include <QProcess>
 
-class LinuxSoundPlugin : public QDeclarativeExtensionPlugin
+class SoundThread : public QThread
 {
     Q_OBJECT
-    
 public:
-    void registerTypes(const char *uri);
+    SoundThread(const QString program, const QStringList arguments);
+    ~SoundThread();
+protected:
+    void run();
+public slots:
+    void destroyItself();
+private:
+    QString mProgram;
+    QStringList mArguments;
+    QProcess *mProcess;
 };
 
-#endif // LINUXSOUND_PLUGIN_H
-
+#endif // SOUNDTHREAD_H
