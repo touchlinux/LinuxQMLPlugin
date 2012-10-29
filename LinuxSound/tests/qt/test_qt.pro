@@ -9,7 +9,6 @@ QT       += core gui
 TARGET = test_qt
 TEMPLATE = app
 
-
 SOURCES += main.cpp\
     mainwindow.cpp \
     ../../src/soundThread.cpp

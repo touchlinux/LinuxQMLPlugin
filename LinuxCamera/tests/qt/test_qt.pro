@@ -6,7 +6,7 @@
 
 QT       += core gui
 
-TARGET = unittest
+TARGET = test_qt
 TEMPLATE = app
 
 

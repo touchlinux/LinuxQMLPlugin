@@ -9,11 +9,13 @@ uri = com.touchlinux.LinuxSound
 # Input
 SOURCES += \
     src/linuxSound_plugin.cpp \
-    src/linuxSound.cpp
+    src/linuxSound.cpp \
+    src/soundThread.cpp
 
 HEADERS += \
     src/linuxSound_plugin.h \
-    src/linuxSound.h
+    src/linuxSound.h \
+    src/soundThread.h
 
 OTHER_FILES = qmldir
 
