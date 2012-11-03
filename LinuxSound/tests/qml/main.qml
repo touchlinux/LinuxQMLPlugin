@@ -25,7 +25,7 @@ Rectangle {
 
     LinuxSound {
         id: sound
-        source: "PCM_16bit_44100Hz.wav"
+        source: "../files/PCM_16bit_44100Hz.wav"
         rate: 44100
         onPlayStarted: {
             console.debug("play started");
