@@ -25,19 +25,30 @@
 
 LinuxSound::LinuxSound(QDeclarativeItem *parent):
     QDeclarativeItem(parent),
-    mThread(NULL)
+    mThread(NULL),
+    mGapMsec(1000)
 {
     // By default, QDeclarativeItem does not draw anything. If you subclass
     // QDeclarativeItem to create a visual item, you will need to uncomment the
     // following line:
     
     // setFlag(ItemHasNoContents, false);
+
+    mGapTimer = new QTimer;
+    mGapTimer->setSingleShot(true);
+    mGapTimer->start(1000);
+    connect(mGapTimer, SIGNAL(timeout()), this, SLOT(processTimeout()));
 }
 
 LinuxSound::~LinuxSound()
 {
     if (mThread != NULL)
         delete mThread;
+    delete mGapTimer;
+}
+
+void LinuxSound::processTimeout() {
+    qDebug() << "processTimeout() is called";
 }
 
 void LinuxSound::setSource(QString source)
@@ -52,11 +63,30 @@ void LinuxSound::setRate(int rate)
     }
 }
 
+void LinuxSound::setOverlap(bool overlap)
+{
+    mOverlap = overlap;
+}
+
+void LinuxSound::setGap(int msec)
+{
+    mGapMsec = msec;
+}
+
 void LinuxSound::play()
 {
-    QStringList arguments;
-    arguments << QString("-r %1").arg(mRate) <<  mSource;
+    if ((mGapTimer->isActive() == false) && (mThread == NULL || mOverlap == true)) {
+        /* Timer */
+        mGapTimer->setSingleShot(true);
+        mGapTimer->start(mGapMsec);
 
-    mThread = new SoundThread(QString("aplay"), arguments);
-    mThread->start();
+        QStringList arguments;
+        arguments << QString("-r %1").arg(mRate) <<  mSource;
+
+        mThread = new SoundThread(QString("aplay"), arguments);
+        mThread->start();
+
+        emit playStarted();
+        connect(mThread, SIGNAL(destroyed()), this, SIGNAL(playFinished()));
+    }
 }

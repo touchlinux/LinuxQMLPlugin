@@ -25,6 +25,7 @@
 #include <QtDeclarative/QDeclarativeItem>
 #include <QtMultimedia/QAudioOutput>
 #include <QFile>
+#include <QTimer>
 #include <QProcess>
 #include "soundThread.h"
 
@@ -34,6 +35,8 @@ class LinuxSound : public QDeclarativeItem
     Q_DISABLE_COPY(LinuxSound)
     Q_PROPERTY(QString source READ source WRITE setSource)
     Q_PROPERTY(int rate READ rate WRITE setRate)
+    Q_PROPERTY(bool overlap READ overlap WRITE setOverlap)
+    Q_PROPERTY(int gap READ gap WRITE setGap)
     
 public:
     LinuxSound(QDeclarativeItem *parent = 0);
@@ -48,14 +51,24 @@ public:
     void setSource(QString source);
     int rate() { return mRate; }
     void setRate(int rate);
+    bool overlap() { return mOverlap; }
+    void setOverlap(bool overlap);
+    int gap() { return mGapMsec; }
+    void setGap(int msec);
     Q_INVOKABLE void play();
+public slots:
+    void processTimeout();
 signals:
     void playStarted();
     void playFinished();
+
 private:
     QString mSource;
     int mRate;
+    bool mOverlap;
     SoundThread *mThread;
+    QTimer *mGapTimer;
+    int mGapMsec;
 };
 
 QML_DECLARE_TYPE(LinuxSound)
